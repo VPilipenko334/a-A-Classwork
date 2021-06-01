@@ -1,7 +1,8 @@
-
+require "manager.rb"
 
 class Employee
-
+  
+  extend Manager
 
   attr_reader :employee_name, :title, :salary, :boss
 
@@ -12,5 +13,8 @@ class Employee
     @boss = boss
   end
 
+  def bonus(multiplier)
+    bonus = (salary) * multiplier
+  end
 
 end
