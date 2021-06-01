@@ -1,15 +1,15 @@
-
-
-
 module Manager
-
-  def initialize()
+  attr_reader :all_employees
     @all_employees = []
-  end
+  
+  def manager_bonus(multiplier)
+    bonus = 0
+    
+    all_employees.each do |employee| 
+      bonus += employee.salary 
+    end 
 
-  def bonus(multiplier)
-    bonus = bob.salary * multiplier
-    # total salary of all sub-employees
+    bonus * multiplier
   end
 
 end
