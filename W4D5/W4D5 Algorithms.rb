@@ -83,4 +83,27 @@ end
 
 arr = [5,3,-7]
 
-puts "Largest Contiguous Sub-sum: #{Benchmark.measure{phase_2_largest_contiguous_sum(arr)}}" 
+
+
+def first_anagram?(word1,word2) 
+
+    hash1 = Hash.new(0)
+    hash2 = Hash.new(0)
+
+
+    word1.each_char do |char|
+        hash1[char] += 1
+    end
+    #########################
+
+    word2.each_char do |char|
+        hash2[char] += 1
+    end
+    hash1 == hash2
+
+end
+
+puts first_anagram?("gizmo","sally")
+puts "#{Benchmark.measure{first_anagram?("gizmo", "sally")}}" 
+puts "#{Benchmark.measure{first_anagram?("elvis", "lives")}}" 
+
