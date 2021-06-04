@@ -94,6 +94,7 @@ def first_anagram?(word1,word2)
     word1.each_char do |char|
         hash1[char] += 1
     end
+
     #########################
 
     word2.each_char do |char|
@@ -103,7 +104,26 @@ def first_anagram?(word1,word2)
 
 end
 
-puts first_anagram?("gizmo","sally")
-puts "#{Benchmark.measure{first_anagram?("gizmo", "sally")}}" 
-puts "#{Benchmark.measure{first_anagram?("elvis", "lives")}}" 
+# puts first_anagram?("gizmo","sally")
+# puts "#{Benchmark.measure{first_anagram?("gizmo", "sally")}}" 
+# puts "#{Benchmark.measure{first_anagram?("elvis", "lives")}}" 
 
+def second_anagram?(word1, word2) #sally 
+    
+    word1.each_char do |char|
+        idx = word2.split("").find_index(char) #["s", "a", "l", "l", "y"]
+        word2.delete(word1[idx])
+    end
+
+    return true if word2.empty? 
+
+end 
+
+# puts first_anagram?("gizmo","sally")
+# puts first_anagram?("gizmowus","sallfday")
+puts second_anagram?("elvis","lives")
+# puts "#{Benchmark.measure{second_anagram?("gizmo", "sally")}}" 
+
+# puts "#{Benchmark.measure{second_anagram?("elvis", "lives")}}" 
+
+# puts "#{Benchmark.measure{second_anagram?("gizfkdshfkjsdhfjkdshfjkdshfjkdshmo", "salsdlkfhdsjkfdjksfhlkdshfklsly")}}" 
