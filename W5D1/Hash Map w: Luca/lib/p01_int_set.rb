@@ -5,24 +5,31 @@ class MaxIntSet
   end
 
   def insert(num)
-    @store[num] = true if is_valid?(num)
+     if validate!(num)
+      @store[num] = true
+     end
   end
-
+  
   def remove(num)
   end
-
+  
   def include?(num)
     # @store.include?(num)
   end
-
+  
   private
-
-  def is_valid?(num)
-    return true if num >= 0 && num <= @max 
-    false 
+  
+  def is_valid?(num) #determines if the number is in the range
+    array_range = (0..@max).to_a
+    if array_range.include?(num)
+      return true
+    else
+      return false
+    end
   end
-
-  def validate!(num)
+  
+  def validate!(num) #calls valid ... just raises error 
+    raise "Out of bounds" if !is_valid?(num)
   end
 end
 
