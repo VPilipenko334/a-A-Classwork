@@ -1,20 +1,28 @@
+require 'byebug'
+
 class MaxIntSet
+  attr_reader :store
+
   def initialize(max)
     @max = max 
     @store = Array.new(max, false)
   end
 
   def insert(num)
-     if validate!(num)
-      @store[num] = true
-     end
+    if validate!(num) 
+      if @store[num] == false
+        @store[num] = true
+      else
+        @store[num] = false
+      end
+    end
   end
   
   def remove(num)
   end
   
   def include?(num)
-    # @store.include?(num)
+    @store[num] if validate!(num)
   end
   
   private
@@ -27,9 +35,13 @@ class MaxIntSet
       return false
     end
   end
-  
+  # debugger 
   def validate!(num) #calls valid ... just raises error 
-    raise "Out of bounds" if !is_valid?(num)
+    if !is_valid?(num)
+      raise "Out of bounds" 
+    else
+      true
+    end
   end
 end
 
