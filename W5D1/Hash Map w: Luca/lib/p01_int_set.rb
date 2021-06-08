@@ -19,6 +19,9 @@ class MaxIntSet
   end
   
   def remove(num)
+    if validate!(num) && @store[num] == true
+      @store[num] = false
+    end
   end
   
   def include?(num)
@@ -52,18 +55,21 @@ class IntSet
   end
 
   def insert(num)
+    idx = num % num_buckets
+    @store[idx] << num
   end
 
   def remove(num)
   end
 
   def include?(num)
+    return true if insert(num)
   end
 
   private
 
   def [](num)
-    # optional but useful; return the bucket corresponding to `num`
+    self[num % num_buckets] = num
   end
 
   def num_buckets
