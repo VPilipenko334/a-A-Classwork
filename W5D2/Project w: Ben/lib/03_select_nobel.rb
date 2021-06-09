@@ -29,19 +29,32 @@ def prizes_from_1950
   FROM
     nobels
   WHERE
-    yr = 1950
+    yr = 1950;
   SQL
 end
 
 def literature_1962
   # Show who won the 1962 prize for Literature.
   execute(<<-SQL)
+  SELECT 
+    winner 
+  FROM 
+    nobels
+  WHERE 
+  yr = 1962 AND 
+  subject LIKE 'Literature';
   SQL
 end
 
 def einstein_prize
   # Show the year and subject that won 'Albert Einstein' his prize.
   execute(<<-SQL)
+  SELECT 
+    yr, subject
+  FROM
+    nobels
+  WHERE
+    winner LIKE 'Albert Einstein';
   SQL
 end
 
