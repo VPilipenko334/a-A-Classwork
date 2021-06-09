@@ -12,6 +12,7 @@ class QuestionsDatabase < SQLite3::Database
 end
 
 class Users
+    attr_reader :fname, :lname 
     def self.find_by_id(user_id)
         data = QuestionsDatabase.instance.execute(<<-SQL, user_id)
             SELECT
@@ -42,6 +43,14 @@ class Users
         @lname = options['lname']
     end
 
+    def authored_questions
+        Questions.find_by_author_id(@id)
+    end
+
+    def authored_replies
+        Replies.find_by_user_id(@id)
+    end 
+
     def create
         QuestionsDatabase.instance.execute(<<-SQL, @id, @fname, @lname)
         INSERT INTO 
@@ -63,7 +72,9 @@ class Questions
             WHERE
                 user_id = ?
         SQL
-        Questions.new(data[0])
+        result = []
+        data.each { |datum| result << Questions.new(datum) }
+        result
     end
     
     def self.find_by_id(question_id)
@@ -75,7 +86,9 @@ class Questions
             WHERE
                 id = ?
         SQL
-        Questions.new(data[0])
+        result = []
+        data.each { |datum| result << Questions.new(datum) }
+        result
     end
 
     def self.find_by_title(q_title)
@@ -87,7 +100,9 @@ class Questions
             WHERE
                 title = ? 
         SQL
-        Questions.new(data[0])
+        result = []
+        data.each { |datum| result << Questions.new(datum) }
+        result
     end
 
     def initialize(options)
@@ -97,9 +112,27 @@ class Questions
         @user_id = options['user_id']
     end
 
+    def author 
+        data = QuestionsDatabase.instance.execute(<<-SQL, @user_id)
+        SELECT 
+            *
+        FROM 
+            users
+        WHERE
+            id = ?
+        SQL
+        first = data[0]['fname'] #data --> an array of hashes where each hash is a row in our table 
+        last = data[0]['lname']
+        first + " " + last 
+    end
+
+    def replies
+        Replies.find_by_question_id(@id)
+    end 
+
     def create
         QuestionsDatabase.instance.execute(<<-SQL, @id, @title, @body, @user_id)
-        INSERT INTO 
+        INSERT INTO
             questions (id, title, body, user_id)
         VALUES
             (?,?,?,?)
@@ -118,7 +151,9 @@ class QuestionFollows
             WHERE
                 id = ?
         SQL
-        QuestionFollows.new(data[0])
+        result = []
+        data.each { |datum| result << QuestionFollows.new(datum) }
+        result
     end
 
     def self.find_by_user_id(u_id)
@@ -130,7 +165,9 @@ class QuestionFollows
             WHERE
                 user_id = ? 
         SQL
-        QuestionFollows.new(data[0])
+        result = []
+        data.each { |datum| result << QuestionFollows.new(datum) }
+        result
     end
 
     def self.find_by_question_id(q_id)
@@ -142,7 +179,9 @@ class QuestionFollows
             WHERE
                 question_id = ? 
         SQL
-        QuestionFollows.new(data[0])
+        result = []
+        data.each { |datum| result << QuestionFollows.new(datum) }
+        result
     end
 
     def initialize(options)
@@ -172,7 +211,9 @@ class QuestionLikes
             WHERE
                 user_id = ? 
         SQL
-        QuestionLikes.new(data[0])
+        result = []
+        data.each { |datum| result << QuestionLikes.new(datum) }
+        result
     end
 
     def self.find_by_question_id(q_id)
@@ -184,7 +225,9 @@ class QuestionLikes
             WHERE
                 question_id = ? 
         SQL
-        QuestionLikes.new(data[0])
+        result = []
+        data.each { |datum| result << QuestionLikes.new(datum) }
+        result
     end
 
     def initialize(options)
@@ -213,7 +256,9 @@ class Replies
             WHERE
                 id = ?
         SQL
-        Replies.new(data[0])
+        result = []
+        data.each { |datum| result << Replies.new(datum) }
+        result
     end
 
     def self.find_by_user_id(u_id)
@@ -225,7 +270,9 @@ class Replies
             WHERE
                 user_id = ? 
         SQL
-        Replies.new(data[0])
+        result = []
+        data.each { |datum| result << Replies.new(datum) }
+        result
     end
 
     def self.find_by_question_id(q_id)
@@ -252,7 +299,9 @@ class Replies
             WHERE
                 parent = ?
         SQL
-        Replies.new(data[0])
+        result = []
+        data.each { |datum| result << Replies.new(datum) }
+        result
     end
 
     def self.find_by_body(rbody)
@@ -264,7 +313,9 @@ class Replies
             WHERE
                 body = ?
         SQL
-        Replies.new(data[0])
+        result = []
+        data.each { |datum| result << Replies.new(datum) }
+        result
     end
 
     def initialize(options)
