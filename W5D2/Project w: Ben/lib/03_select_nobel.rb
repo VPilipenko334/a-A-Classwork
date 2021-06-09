@@ -61,6 +61,13 @@ end
 def millennial_peace_prizes
   # Give the name of the 'Peace' winners since the year 2000, including 2000.
   execute(<<-SQL)
+  SELECT
+    winner
+  FROM
+    nobels
+  WHERE
+    yr >= 2000 AND 
+    subject LIKE 'Peace';
   SQL
 end
 
@@ -68,6 +75,12 @@ def eighties_literature
   # Show all details (yr, subject, winner) of the Literature prize winners
   # for 1980 to 1989 inclusive.
   execute(<<-SQL)
+  SELECT
+    *
+  FROM
+    nobels
+  WHERE
+    subject LIKE 'Literature' AND yr BETWEEN 1980 AND 1989;
   SQL
 end
 
