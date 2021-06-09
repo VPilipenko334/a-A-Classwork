@@ -290,7 +290,7 @@ class Replies
         result
     end
 
-    def self.find_by_id(parent_id)
+    def self.find_by_parent(parent_id)
         data = QuestionsDatabase.instance.execute(<<-SQL, parent_id)
             SELECT
                 *
@@ -324,6 +324,62 @@ class Replies
         @question_id = options['question_id']
         @parent = options['parent']
         @body = options['body']
+    end
+
+    def author
+        data = QuestionsDatabase.instance.execute(<<-SQL, @user_id)
+        SELECT 
+            *
+        FROM 
+            users
+        WHERE
+            id = ?
+        SQL
+
+        first = data[0]['fname'] #data --> an array of hashes where each hash is a row in our table 
+        last = data[0]['lname']
+        first + " " + last 
+    end
+
+    def question
+        data = QuestionsDatabase.instance.execute(<<-SQL, @question_id)
+        SELECT 
+            *
+        FROM 
+            questions
+        WHERE
+            id = ?
+        SQL
+
+        result = Questions.new(data[0])
+    end
+
+    def parent_reply
+        data = QuestionsDatabase.instance.execute(<<-SQL, @parent)
+        SELECT 
+            *
+        FROM 
+            replies
+        WHERE
+            id = ?
+        SQL
+
+        result = Replies.new(data[0])
+    end
+
+    def child_replies
+        
+        data = QuestionsDatabase.instance.execute(<<-SQL, @id)
+        SELECT 
+            *
+        FROM 
+            replies
+        WHERE
+            parent = ?
+        SQL
+
+        raise ArgumentError.new '#{self} does not have a parent' if data.empty?
+        result = Replies.new(data[0])
     end
 
     def create
