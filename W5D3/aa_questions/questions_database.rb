@@ -41,6 +41,16 @@ class Users
         @fname = options['fname']
         @lname = options['lname']
     end
+
+    def create
+        QuestionsDatabase.instance.execute(<<-SQL, @id, @fname, @lname)
+        INSERT INTO 
+            users(id, fname, lname)
+        VALUES
+            (?,?,?)
+        SQL
+        @id = QuestionsDatabase.instance.last_insert_row_id 
+    end
 end
 
 class Questions 
@@ -73,6 +83,16 @@ class Questions
         @title = options['title']
         @body = options['body']
         @user_id = options['user_id']
+    end
+
+    def create
+        QuestionsDatabase.instance.execute(<<-SQL, @id, @title, @body, @user_id)
+        INSERT INTO 
+            users(id, title, body, user_id)
+        VALUES
+            (?,?,?,?)
+        SQL
+        @id = QuestionsDatabase.instance.last_insert_row_id 
     end
 end
 
@@ -118,6 +138,16 @@ class QuestionFollows
         @user_id = options['user_id']
         @question_id = options['question_id']
     end
+
+    def create
+        QuestionsDatabase.instance.execute(<<-SQL, @id, @user_id, @question_id)
+        INSERT INTO 
+            users(id, user_id, question_id)
+        VALUES
+            (?,?,?)
+        SQL
+        @id = QuestionsDatabase.instance.last_insert_row_id 
+    end
 end
 
 class QuestionLikes
@@ -148,6 +178,16 @@ class QuestionLikes
     def initialize(options)
         @user_id = options['user_id']
         @question_id = options['question_id']
+    end
+
+    def create
+        QuestionsDatabase.instance.execute(<<-SQL, @user_id, @question_id)
+        INSERT INTO 
+            users(user_id, question_id)
+        VALUES
+            (?,?)
+        SQL
+        @id = QuestionsDatabase.instance.last_insert_row_id 
     end
 end
 
@@ -218,5 +258,15 @@ class Replies
         @question_id = options['question_id']
         @parent = options['parent']
         @body = options['body']
+    end
+
+    def create
+        QuestionsDatabase.instance.execute(<<-SQL, @id, @user_id, @question_id, @parent, @body)
+        INSERT INTO 
+            users(id, user_id, question_id, parent, body)
+        VALUES
+            (?,?,?,?,?)
+        SQL
+        @id = QuestionsDatabase.instance.last_insert_row_id 
     end
 end
