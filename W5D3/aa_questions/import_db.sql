@@ -49,6 +49,7 @@ INSERT INTO
 VALUES
     ('Kevin', 'Jo'),
     ('Veronika', 'Pilipenko');
+
 INSERT INTO
     questions (title, body, user_id)
 VALUES

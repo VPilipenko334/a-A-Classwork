@@ -74,6 +74,149 @@ class Questions
         @body = options['body']
         @user_id = options['user_id']
     end
+end
 
+class QuestionFollows
+    def self.find_by_id(question_follows_id)
+        data = QuestionsDatabase.instance.execute(<<-SQL, question_follows_id)
+            SELECT
+                *
+            FROM
+                question_follows
+            WHERE
+                id = ?
+        SQL
+        QuestionFollows.new(data[0])
+    end
 
-end 
+    def self.find_by_user_id(u_id)
+        data = QuestionsDatabase.instance.execute(<<-SQL, u_id)
+            SELECT
+                *
+            FROM
+                question_follows 
+            WHERE
+                user_id = ? 
+        SQL
+        QuestionFollows.new(data[0])
+    end
+
+    def self.find_by_question_id(q_id)
+        data = QuestionsDatabase.instance.execute(<<-SQL, q_id)
+            SELECT
+                *
+            FROM
+                question_follows 
+            WHERE
+                question_id = ? 
+        SQL
+        QuestionFollows.new(data[0])
+    end
+
+    def initialize(options)
+        @id = options['id']
+        @user_id = options['user_id']
+        @question_id = options['question_id']
+    end
+end
+
+class QuestionLikes
+    def self.find_by_user_id(u_id)
+        data = QuestionsDatabase.instance.execute(<<-SQL, u_id)
+            SELECT
+                *
+            FROM
+                question_likes 
+            WHERE
+                user_id = ? 
+        SQL
+        QuestionLikes.new(data[0])
+    end
+
+    def self.find_by_question_id(q_id)
+        data = QuestionsDatabase.instance.execute(<<-SQL, q_id)
+            SELECT
+                *
+            FROM
+                question_likes 
+            WHERE
+                question_id = ? 
+        SQL
+        QuestionLikes.new(data[0])
+    end
+
+    def initialize(options)
+        @user_id = options['user_id']
+        @question_id = options['question_id']
+    end
+end
+
+class Replies
+    def self.find_by_id(reply_id)
+        data = QuestionsDatabase.instance.execute(<<-SQL, reply_id)
+            SELECT
+                *
+            FROM
+                replies
+            WHERE
+                id = ?
+        SQL
+        Replies.new(data[0])
+    end
+
+    def self.find_by_user_id(u_id)
+        data = QuestionsDatabase.instance.execute(<<-SQL, u_id)
+            SELECT
+                *
+            FROM
+                replies
+            WHERE
+                user_id = ? 
+        SQL
+        Replies.new(data[0])
+    end
+
+    def self.find_by_question_id(q_id)
+        data = QuestionsDatabase.instance.execute(<<-SQL, q_id)
+            SELECT
+                *
+            FROM
+                replies 
+            WHERE
+                question_id = ? 
+        SQL
+        Replies.new(data[0])
+    end
+
+    def self.find_by_id(parent_id)
+        data = QuestionsDatabase.instance.execute(<<-SQL, parent_id)
+            SELECT
+                *
+            FROM
+                replies
+            WHERE
+                parent = ?
+        SQL
+        Replies.new(data[0])
+    end
+
+    def self.find_by_body(rbody)
+        data = QuestionsDatabase.instance.execute(<<-SQL, rbody)
+            SELECT
+                *
+            FROM
+                replies
+            WHERE
+                body = ?
+        SQL
+        Replies.new(data[0])
+    end
+
+    def initialize(options)
+        @id = options['id']
+        @user_id = options['user_id']
+        @question_id = options['question_id']
+        @parent = options['parent']
+        @body = options['body']
+    end
+end
