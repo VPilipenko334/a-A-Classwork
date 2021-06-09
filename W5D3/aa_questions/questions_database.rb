@@ -53,7 +53,19 @@ class Users
     end
 end
 
-class Questions 
+class Questions
+    def self.find_by_author_id(author_id)
+        data = QuestionsDatabase.instance.execute(<<-SQL, author_id)
+            SELECT
+                *
+            FROM
+                questions
+            WHERE
+                user_id = ?
+        SQL
+        Questions.new(data[0])
+    end
+    
     def self.find_by_id(question_id)
         data = QuestionsDatabase.instance.execute(<<-SQL, question_id)
             SELECT
@@ -88,7 +100,7 @@ class Questions
     def create
         QuestionsDatabase.instance.execute(<<-SQL, @id, @title, @body, @user_id)
         INSERT INTO 
-            users(id, title, body, user_id)
+            questions (id, title, body, user_id)
         VALUES
             (?,?,?,?)
         SQL
@@ -142,7 +154,7 @@ class QuestionFollows
     def create
         QuestionsDatabase.instance.execute(<<-SQL, @id, @user_id, @question_id)
         INSERT INTO 
-            users(id, user_id, question_id)
+            question_follows (id, user_id, question_id)
         VALUES
             (?,?,?)
         SQL
@@ -183,7 +195,7 @@ class QuestionLikes
     def create
         QuestionsDatabase.instance.execute(<<-SQL, @user_id, @question_id)
         INSERT INTO 
-            users(user_id, question_id)
+            question_likes (user_id, question_id)
         VALUES
             (?,?)
         SQL
@@ -225,7 +237,10 @@ class Replies
             WHERE
                 question_id = ? 
         SQL
-        Replies.new(data[0])
+        
+        result = []
+        data.each { |datum| result << Replies.new(datum) }
+        result
     end
 
     def self.find_by_id(parent_id)
@@ -263,7 +278,7 @@ class Replies
     def create
         QuestionsDatabase.instance.execute(<<-SQL, @id, @user_id, @question_id, @parent, @body)
         INSERT INTO 
-            users(id, user_id, question_id, parent, body)
+            replies (id, user_id, question_id, parent, body)
         VALUES
             (?,?,?,?,?)
         SQL
