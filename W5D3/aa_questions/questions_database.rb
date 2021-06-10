@@ -161,6 +161,22 @@ class QuestionFollows
         users 
     end
 
+    def self.followed_questions_for_user_id(user_id)
+        data = QuestionsDatabase.instance.execute(<<-SQL, user_id)
+        SELECT
+            title, body
+        FROM
+            question_follows
+        JOIN
+            questions ON question_follows.question_id = questions.id
+        WHERE
+            question_follows.user_id = ? 
+        SQL
+        
+        questions = []
+        data.each {|datum| questions << "#{datum['title']}: #{datum['body']}"}
+        questions
+    end
 
     def self.find_by_id(question_follows_id)
         data = QuestionsDatabase.instance.execute(<<-SQL, question_follows_id)
