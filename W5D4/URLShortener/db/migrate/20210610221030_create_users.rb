@@ -4,6 +4,6 @@ class CreateUsers < ActiveRecord::Migration[5.2]
       t.string :email, null: false
       t.timestamps
     end
-    add_index :users, :email, unique: true 
+    add_index :users, :email, unique: true
   end
 end
