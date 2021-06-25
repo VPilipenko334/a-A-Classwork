@@ -1,0 +1,23 @@
+<link rel= "stylesheet" href="new.css">
+
+<h1> Sign In! </h1>
+
+<form method="POST" action="<%=session_url%>">Sign into your account, my friend!
+<input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+
+<br><br>
+
+<label> Username:
+<input name="user[username]" value=""> 
+</label>
+
+<br><br>
+
+<label> Password:
+<input name="user[password]" value="" type="password"> 
+</label>
+
+<br><br>
+
+<button type="submit">Sign In</button>
+</form>

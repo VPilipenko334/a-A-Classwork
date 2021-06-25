@@ -1,0 +1,6 @@
+<h1>All Users:</h1>
+
+<% if logged_in? %>
+<% @users.each do |user| %>
+<%= user.username  %>
+<% end %>
