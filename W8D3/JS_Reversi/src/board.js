@@ -142,15 +142,34 @@ console.log(board._positionsToFlip([3, 5], "white", [0, -1], []));
  * taking the position will result in some pieces of the opposite
  * color being flipped.
  */
+
+
 Board.prototype.validMove = function (pos, color) {
-  if(!this.isOccupied(pos))
+  if(this.isOccupied(pos)){
+    return false;
+  }
+
+  // Board.DIRS = [
+  //   [ 0,  1], [ 1,  1], [ 1,  0],
+  //   [ 1, -1], [ 0, -1], [-1, -1],
+  //   [-1,  0], [-1,  1]
+  // ];
+
+for(let i=0; i< Board.DIRS.length; i++){
+  if(this._positionsToFlip(pos,color,Board.DIRS[i],[]).length>0 ){
+      return true;
+  }
+}
+
+return false;
+
 };
 
 /**
  * Adds a new piece of the given color to the given position, flipping the
  * color of any pieces that are eligible for flipping.
  *
- * Throws an error if the position represents an invalid move.
+ * Throws an error if the position represents an i nvalid move.
  */
 Board.prototype.placePiece = function (pos, color) {
 };
