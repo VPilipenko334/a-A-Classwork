@@ -143,6 +143,7 @@ console.log(board._positionsToFlip([3, 5], "white", [0, -1], []));
  * color being flipped.
  */
 Board.prototype.validMove = function (pos, color) {
+  if(!this.isOccupied(pos))
 };
 
 /**
