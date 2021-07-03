@@ -34,5 +34,5 @@ Doggy.prototype.waddle = function () {
 };
 
 const blixa = new Doggy("Toto");
-blixa.bark();
-blixa.waddle();
+toto.bark();
+toto.run();
