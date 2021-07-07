@@ -15,7 +15,7 @@
   \**********************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const View = __webpack_require__(/*! ./ttt-view.js */ \"./src/ttt-view.js\");\nconst Game = __webpack_require__(/*! ../ttt_node/game.js */ \"./ttt_node/game.js\");\n\ndocument.addEventListener(\"DOMContentLoaded\", () => {\n  // Your code here\n});\n\n\n//# sourceURL=webpack:///./src/index.js?");
+eval("const View = __webpack_require__(/*! ./ttt-view.js */ \"./src/ttt-view.js\");\nconst Game = __webpack_require__(/*! ../ttt_node/game.js */ \"./ttt_node/game.js\");\n\ndocument.addEventListener(\"DOMContentLoaded\", () => {\n  const rootEle = document.querySelector(\".ttt\");\n  const game = new Game();\n  const view = new View(game, rootEle);\n});\n\n\n//# sourceURL=webpack:///./src/index.js?");
 
 /***/ }),
 
@@ -23,9 +23,9 @@ eval("const View = __webpack_require__(/*! ./ttt-view.js */ \"./src/ttt-view.js\
 /*!*************************!*\
   !*** ./src/ttt-view.js ***!
   \*************************/
-/***/ ((module) => {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("class View {\n  constructor(game, el) {}\n\n  setupBoard() {}\n  \n  bindEvents() {}\n\n  handleClick(e) {}\n\n  makeMove(square) {}\n\n}\n\nmodule.exports = View;\n\n\n//# sourceURL=webpack:///./src/ttt-view.js?");
+eval("const Game = __webpack_require__(/*! ../ttt_node/game */ \"./ttt_node/game.js\");\n\nclass View {\n  constructor(game, el) {\n    this.game = game;\n    this.el = el;\n    this.handleClick = this.handleClick.bind(this);\n    this.setupBoard();\n    this.bindEvents();\n  }\n\n  setupBoard() {\n    const ul = document.createElement(\"ul\");\n    \n    for(let rowIndex = 0; rowIndex < 3; rowIndex++){\n      for(let colIndex = 0; colIndex < 3; colIndex++){\n        const li = document.createElement(\"li\");\n        li.dataset.pos = JSON.stringify([rowIndex, colIndex])\n        ul.append(li);\n      }\n    }\n    this.el.append(ul);\n  }\n  \n  bindEvents() {\n    this.el.addEventListener(\"click\", this.handleClick);\n  }\n\n  handleClick(e) {\n    const el = e.target;\n    if (el.nodeName === \"LI\"){\n      this.makeMove(el);\n    }\n  }\n\n  makeMove(square) {\n    // JSON.parse will convert the json string back into an array\n    const pos = JSON.parse(square.dataset.pos);\n    const currentPlayer = this.game.currentPlayer;\n    try {\n      this.game.playMove(pos);\n    } catch (e) {\n      alert(\"This \" + e.msg.toLowerCase());\n    }\n    square.classList.add(currentPlayer);\n    if (this.game.isOver()) this.handleGameOver()\n  }\n  \n  handleGameOver(){\n    // Remove the click listener from the board\n    this.el.removeEventListener(\"click\", this.handleClick)\n    this.el.classList.add(\"game-over\")\n  \n    const winner = this.game.winner();\n    const figcaption = document.createElement(\"figcaption\")\n  \n    if (winner) {\n      this.el.classList.add(`winner-${winner}`);\n      figcaption.append(`You win, ${winner}!`)\n    } else {\n      figcaption.append(\"It's a draw!\")\n    }\n  \n    this.el.append(figcaption)\n  }\n}\n\nmodule.exports = View;\n\n//# sourceURL=webpack:///./src/ttt-view.js?");
 
 /***/ }),
 
