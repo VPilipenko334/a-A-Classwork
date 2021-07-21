@@ -1,5 +1,6 @@
 import { RECEIVE_TODO } from "../actions/todo_actions";
 import { RECEIVE_TODOS } from "../actions/todo_actions";
+import { REMOVE_TODO } from "../actions/todo_actions";
 
 // Return the initial state if the state argument is undefined.
 // Return the state if the reducer doesn't care about the action.
