@@ -1,10 +1,10 @@
 //presentational component
 import React from 'react';
-import TodoListItem from './todo_list/todo_list_item';
-import TodoForm from './todo_list/todo_form';
+// import TodoListItem from './todo_list/todo_list_item';
+// import TodoForm from './todo_list/todo_form';
 
 const TodoList = (props) => {
-    const todos = props.todos;
+    const todos = props.todos; // prop will thread the todo down;
     const listItems = todos.map(todo => {
         return <TodoListItem todo ={todo}/> 
     })
