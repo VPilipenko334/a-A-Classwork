@@ -8,8 +8,8 @@ import { receiveTodos, receiveTodo } from "../../actions/todo_actions";
 import { allTodos } from "../../reducers/selectors";
 
 const mapStateToProps = (state) => {
- return ({
-     todos: allTodos(state)
+ return ({                              //explicit return 
+     todos: allTodos(state)             //creating a prop called todos and return the value of all todos when passing in the state
  })
 };
 
